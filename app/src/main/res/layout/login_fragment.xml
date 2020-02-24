@@ -29,7 +29,7 @@
         app:layout_constraintTop_toBottomOf="@+id/register_page" />
 
     <EditText
-        android:id="@+id/regtxtEmail"
+        android:id="@+id/logintxtEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -42,11 +42,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Password"
-        app:layout_constraintStart_toStartOf="@+id/regtxtEmail"
-        app:layout_constraintTop_toBottomOf="@+id/regtxtEmail" />
+        app:layout_constraintStart_toStartOf="@+id/logintxtEmail"
+        app:layout_constraintTop_toBottomOf="@+id/logintxtEmail" />
 
     <EditText
-        android:id="@+id/txtPwd"
+        android:id="@+id/logintxtPwd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -55,13 +55,13 @@
         app:layout_constraintTop_toBottomOf="@+id/passLabel" />
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/mbtnLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Login"
-        app:layout_constraintStart_toStartOf="@+id/txtPwd"
-        app:layout_constraintTop_toBottomOf="@+id/txtPwd" />
+        app:layout_constraintStart_toStartOf="@+id/logintxtPwd"
+        app:layout_constraintTop_toBottomOf="@+id/logintxtPwd" />
 
     <TextView
         android:id="@+id/lnkRegister"
@@ -75,7 +75,7 @@
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btnLogin"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+        app:layout_constraintStart_toStartOf="@+id/mbtnLogin"
+        app:layout_constraintTop_toBottomOf="@+id/mbtnLogin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

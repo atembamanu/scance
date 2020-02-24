@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/register_page" />
 
     <EditText
-        android:id="@+id/regtxtEmail"
+        android:id="@+id/txtEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:text="Full Name "
         app:layout_constraintStart_toStartOf="@id/emailLabel"
-        app:layout_constraintTop_toBottomOf="@+id/regtxtEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
 
     <EditText
         android:id="@+id/regtxtName"
@@ -119,6 +119,7 @@
         android:layout_marginEnd="16dp"
         android:gravity="center"
         android:text="Been here before? Login here"
+        android:visibility="gone"
         android:textColor="#3F51B5"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"

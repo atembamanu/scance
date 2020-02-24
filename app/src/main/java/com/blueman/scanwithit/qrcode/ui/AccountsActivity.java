@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 import com.blueman.scanwithit.R;
 
-public class AccountsActivity extends AppCompatActivity {
+public class AccountsActivity extends AppCompatActivity  implements FragmentInterface{
 
     private Fragment fragment;
     private FragmentManager fragmentManager;
@@ -23,7 +23,8 @@ public class AccountsActivity extends AppCompatActivity {
     }
 
     public void addFragment(){
-        fragment = new LoginFragment();
+        LoginFragment fragment = new LoginFragment();
+        fragment.setFragmentInterface(this);
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragmentContainer, fragment);
@@ -37,5 +38,10 @@ public class AccountsActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(R.id.fragmentContainer, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void changeFragment() {
+        replaceFragment();
     }
 }
