@@ -1,4 +1,6 @@
-package com.blueman.scanwithit.qrcode.models;
+package com.blueman.scanwithit.qrcode.models.network;
+
+import com.blueman.scanwithit.qrcode.models.Student;
 
 import retrofit2.Call;
 import retrofit2.http.Field;

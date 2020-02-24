@@ -13,10 +13,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.blueman.scanwithit.R;
-import com.blueman.scanwithit.qrcode.models.ApiClient;
-import com.blueman.scanwithit.qrcode.models.ApiInterface;
+import com.blueman.scanwithit.qrcode.models.network.ApiClient;
+import com.blueman.scanwithit.qrcode.models.network.ApiInterface;
 import com.blueman.scanwithit.qrcode.models.Student;
 
 import butterknife.BindView;
@@ -50,6 +52,8 @@ public class RegisterFragment extends Fragment {
 
     private FragmentInterface fragmentInterface;
     private ApiInterface apiInterface;
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,7 +67,7 @@ public class RegisterFragment extends Fragment {
             student_class = _class.getText().toString();
             student_pass = _pass.getText().toString();
             security_word = _sword.getText().toString();
-            QR_code = student_email+security_word;
+            QR_code = student_email.concat(security_word);
             registerStudent(student_name, student_email,security_word, student_class, QR_code, student_pass);
         });
 
@@ -85,11 +89,13 @@ public class RegisterFragment extends Fragment {
             public void onResponse(Call<Student> call, Response<Student> response) {
                 if(response.isSuccessful() && response.body() !=null){
                     if (response.body().getCode() == 200 ){
-                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                        assert getFragmentManager() != null;
+                        getFragmentManager().popBackStack();
                     }else{
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getContext(), "Code: "+ response.body().getCode() +", "+response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), response.body().getCode() +", "+response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -102,6 +108,10 @@ public class RegisterFragment extends Fragment {
             }
         });
 
+
+    }
+
+    private void nowYouCanLogin() {
 
     }
 

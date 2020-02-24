@@ -1,4 +1,4 @@
-package com.blueman.scanwithit.qrcode.models;
+package com.blueman.scanwithit.qrcode.models.network;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
