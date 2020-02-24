@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,8 @@ public class RegisterFragment extends Fragment {
     @BindView(R.id.regtxtClass) EditText _class;
     @BindView(R.id.regtxtSec) EditText _sword;
     @BindView(R.id.regtxtPwd) EditText _pass;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
 
     @BindView(R.id.regbtnRegister)
     Button register;
@@ -54,6 +57,7 @@ public class RegisterFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         register.setOnClickListener(v -> {
+            progressBar.setVisibility(View.VISIBLE);
             student_email = _email.getText().toString();
             student_name = _name.getText().toString();
             student_class = _class.getText().toString();
@@ -81,8 +85,10 @@ public class RegisterFragment extends Fragment {
             public void onResponse(Call<Student> call, Response<Student> response) {
                 if(response.isSuccessful() && response.body() !=null){
                     if (response.body().getCode() == 200 ){
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }else{
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(getContext(), "Code: "+ response.body().getCode() +", "+response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -90,6 +96,7 @@ public class RegisterFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Student> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(getContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 
             }
