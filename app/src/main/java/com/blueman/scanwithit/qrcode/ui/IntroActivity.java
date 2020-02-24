@@ -1,4 +1,4 @@
-package com.blueman.scanwithit.ui;
+package com.blueman.scanwithit.qrcode.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 

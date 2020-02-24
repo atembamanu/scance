@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.IntroActivity">
+        <activity android:name=".qrcode.ui.AccountsActivity"></activity>
+        <activity android:name=".qrcode.ui.IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

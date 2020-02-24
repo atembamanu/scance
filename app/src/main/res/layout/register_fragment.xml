@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/register_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="REGISTER"
+        android:textColor="@color/colorPrimaryDark"
+        style="@style/TextAppearance.AppCompat.Headline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/emailLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:text="Email "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_page" />
+
+    <EditText
+        android:id="@+id/regtxtEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        app:layout_constraintStart_toStartOf="@+id/emailLabel"
+        app:layout_constraintTop_toBottomOf="@+id/emailLabel" />
+
+
+    <TextView
+        android:id="@+id/nameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Full Name "
+        app:layout_constraintStart_toStartOf="@id/emailLabel"
+        app:layout_constraintTop_toBottomOf="@+id/regtxtEmail" />
+
+    <EditText
+        android:id="@+id/regtxtName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        app:layout_constraintStart_toStartOf="@+id/nameLabel"
+        app:layout_constraintTop_toBottomOf="@+id/nameLabel" />
+    <TextView
+    android:id="@+id/classLabel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Class "
+    app:layout_constraintStart_toStartOf="@id/nameLabel"
+    app:layout_constraintTop_toBottomOf="@+id/regtxtName" />
+
+    <EditText
+        android:id="@+id/regtxtClass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        app:layout_constraintStart_toStartOf="@+id/classLabel"
+        app:layout_constraintTop_toBottomOf="@+id/classLabel" />
+    <TextView
+        android:id="@+id/SecLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Security Word"
+        app:layout_constraintStart_toStartOf="@id/regtxtClass"
+        app:layout_constraintTop_toBottomOf="@+id/regtxtClass" />
+
+    <EditText
+        android:id="@+id/regtxtSec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        app:layout_constraintStart_toStartOf="@+id/SecLabel"
+        app:layout_constraintTop_toBottomOf="@+id/SecLabel" />
+
+
+    <TextView
+        android:id="@+id/regpassLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Password"
+        app:layout_constraintStart_toStartOf="@+id/regtxtSec"
+        app:layout_constraintTop_toBottomOf="@+id/regtxtSec" />
+
+    <EditText
+        android:id="@+id/regtxtPwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintStart_toStartOf="@+id/regpassLabel"
+        app:layout_constraintTop_toBottomOf="@+id/regpassLabel" />
+
+
+    <Button
+        android:id="@+id/regbtnRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Register"
+        app:layout_constraintStart_toStartOf="@+id/regtxtPwd"
+        app:layout_constraintTop_toBottomOf="@+id/regtxtPwd" />
+
+    <TextView
+        android:id="@+id/lnkLogin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:text="Been here before? Login here"
+        android:textColor="#3F51B5"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/regbtnRegister"
+        app:layout_constraintTop_toBottomOf="@+id/regbtnRegister" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
