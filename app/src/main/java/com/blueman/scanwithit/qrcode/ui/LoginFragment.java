@@ -1,28 +1,38 @@
 package com.blueman.scanwithit.qrcode.ui;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.blueman.scanwithit.R;
+import com.blueman.scanwithit.qrcode.models.Student;
+import com.blueman.scanwithit.qrcode.models.UserData;
+import com.blueman.scanwithit.qrcode.models.network.ApiClient;
+import com.blueman.scanwithit.qrcode.models.network.ApiInterface;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class LoginFragment extends Fragment {
-
-    @BindView(R.id.logintxtEmail) EditText student_email;
-    @BindView(R.id.logintxtPwd) EditText student_pass;
+    @BindView(R.id.logintxtEmail) EditText _email;
+    @BindView(R.id.logintxtPwd) EditText _pass;
+    @BindView(R.id.mprogress_bar)
+    ProgressBar progressBar;
 
     @BindView(R.id.mbtnLogin) Button login;
     @BindView(R.id.lnkRegister) TextView goTORegisterLnk;
@@ -49,7 +59,36 @@ public class LoginFragment extends Fragment {
     }
 
     private void loginUser() {
+        progressBar.setVisibility(View.VISIBLE);
+        String student_email = _email.getText().toString();
+        String student_pass = _pass.getText().toString();
+        authenticateUser(student_email, student_pass);
+    }
 
+    private void authenticateUser(final String student_email, final String student_pass) {
+
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<UserData> call = apiInterface.performLogin(student_email, student_pass);
+
+        call.enqueue(new Callback<UserData>() {
+            @Override
+            public void onResponse(Call<UserData> call, Response<UserData> response) {
+                if (response.isSuccessful() && response.body() != null){
+                    Toast.makeText(getContext(), "welcome, "+response.body().getData().getStudentName(), Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+
+                }else{
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), response.body().getCode() +", "+response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserData> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void setFragmentInterface(FragmentInterface fragmentInterface){

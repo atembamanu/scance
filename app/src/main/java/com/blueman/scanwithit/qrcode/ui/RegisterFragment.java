@@ -52,8 +52,6 @@ public class RegisterFragment extends Fragment {
 
     private FragmentInterface fragmentInterface;
     private ApiInterface apiInterface;
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

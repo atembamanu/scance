@@ -1,6 +1,7 @@
 package com.blueman.scanwithit.qrcode.models.network;
 
 import com.blueman.scanwithit.qrcode.models.Student;
+import com.blueman.scanwithit.qrcode.models.UserData;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -19,4 +20,12 @@ public interface ApiInterface {
             @Field("student_pass") String student_pass
 
     );
+
+    @FormUrlEncoded
+    @POST("login.php")
+    Call<UserData> performLogin(
+            @Field("student_email") String student_email,
+            @Field("student_pass") String student_pass
+    );
+
 }
