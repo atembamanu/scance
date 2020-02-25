@@ -2,19 +2,17 @@
 <resources>
     <color name="colorPrimary">#678FB4</color>
     <color name="colorPrimaryDark">#678FB4</color>
-    <color name="colorAccent">#F0892D</color>
-    <color name="colorWhite">#250054</color>
+    <color name="colorAccent">#65B0B4</color>
+    <color name="colorWhite">#FFF</color>
     <color name="colorTransparent">#00000000</color>
     <color name="black_shade">#800C0C0C</color>
     <color name="black_overlay">#66000000</color>
+    <color name="newColor">#9B90BC</color>
 
 
     <color name="backgroundColor">#ffff</color>
     <color name="tectColor">#000</color>
     <color name="songTimerColor">#484848</color>
-
-
-
     <!--reds-->
     <color name="md_red_50">#FFEBEE</color>
     <color name="md_red_100">#FFCDD2</color>

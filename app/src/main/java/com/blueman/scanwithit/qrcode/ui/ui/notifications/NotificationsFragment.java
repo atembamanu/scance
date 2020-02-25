@@ -28,6 +28,7 @@ public class NotificationsFragment extends Fragment {
         notificationsViewModel.getText().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
+                String finalString = s + "";
                 textView.setText(s);
             }
         });

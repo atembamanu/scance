@@ -2,6 +2,7 @@ package com.blueman.scanwithit.qrcode.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,8 @@ import com.blueman.scanwithit.qrcode.models.UserData;
 import com.blueman.scanwithit.qrcode.models.network.ApiClient;
 import com.blueman.scanwithit.qrcode.models.network.ApiInterface;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -39,6 +42,7 @@ public class LoginFragment extends Fragment{
     @BindView(R.id.lnkRegister) TextView goTORegisterLnk;
 
     private FragmentInterface fragmentInterface;
+
 
 
     @Nullable
@@ -81,9 +85,17 @@ public class LoginFragment extends Fragment{
                 if (response.isSuccessful() && response.body() != null){
                     if (response.body().getCode() == 200 ){
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        //store qrcode in shared pref file
+
+                        SharedPreferences pref = getActivity().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("qrcode_string", response.body().getData().getQRCode());
+                        editor.putString("name_string", response.body().getData().getStudentName());
+                        editor.putString("email_string", response.body().getData().getStudentEmail());
+                        editor.putString("class_string", response.body().getData().getStudentClass());
+                        editor.apply();
                         progressBar.setVisibility(View.GONE);
                         Intent intent = new Intent(getActivity(), DashActivity.class);
-                        intent.putExtra("QR_String", response.body().getData().getQRCode());
                         startActivity(intent);
                         getActivity().finish();
                     }else{
