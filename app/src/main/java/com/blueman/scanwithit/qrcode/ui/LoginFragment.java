@@ -1,6 +1,7 @@
 package com.blueman.scanwithit.qrcode.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.blueman.scanwithit.R;
-import com.blueman.scanwithit.qrcode.models.Student;
 import com.blueman.scanwithit.qrcode.models.UserData;
 import com.blueman.scanwithit.qrcode.models.network.ApiClient;
 import com.blueman.scanwithit.qrcode.models.network.ApiInterface;
@@ -27,8 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment{
     @BindView(R.id.logintxtEmail) EditText _email;
     @BindView(R.id.logintxtPwd) EditText _pass;
     @BindView(R.id.mprogress_bar)
@@ -38,6 +39,7 @@ public class LoginFragment extends Fragment {
     @BindView(R.id.lnkRegister) TextView goTORegisterLnk;
 
     private FragmentInterface fragmentInterface;
+
 
     @Nullable
     @Override
@@ -52,10 +54,13 @@ public class LoginFragment extends Fragment {
     }
 
     private void takeUserToRegisterFragment() {
-        if (fragmentInterface !=null){
-            fragmentInterface.changeFragment();
-        }
-
+       FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment bf = new RegisterFragment();
+        fragmentTransaction.replace(R.id.mcontainer, bf);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     private void loginUser() {
@@ -74,9 +79,17 @@ public class LoginFragment extends Fragment {
             @Override
             public void onResponse(Call<UserData> call, Response<UserData> response) {
                 if (response.isSuccessful() && response.body() != null){
-                    Toast.makeText(getContext(), "welcome, "+response.body().getData().getStudentName(), Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
-
+                    if (response.body().getCode() == 200 ){
+                        Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                        Intent intent = new Intent(getActivity(), DashActivity.class);
+                        intent.putExtra("QR_String", response.body().getData().getQRCode());
+                        startActivity(intent);
+                        getActivity().finish();
+                    }else{
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }else{
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(getContext(), response.body().getCode() +", "+response.body().getMessage(), Toast.LENGTH_SHORT).show();

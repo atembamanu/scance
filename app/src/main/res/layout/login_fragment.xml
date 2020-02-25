@@ -8,12 +8,13 @@
 
     <TextView
         android:id="@+id/register_page"
+        style="@style/TextAppearance.AppCompat.Headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="80dp"
         android:text="LOGIN"
+        android:gravity="center"
         android:textColor="@color/colorPrimaryDark"
-        style="@style/TextAppearance.AppCompat.Headline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="50dp"
         android:text="Email "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_page" />
@@ -67,16 +68,14 @@
         android:id="@+id/lnkRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="48dp"
         android:gravity="center"
         android:text="New to  Scance? Register here"
-        android:textColor="#3F51B5"
+        android:textColor="#65B0B4"
         android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/mbtnLogin"
-        app:layout_constraintTop_toBottomOf="@+id/mbtnLogin" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ProgressBar
         android:id="@+id/mprogress_bar"

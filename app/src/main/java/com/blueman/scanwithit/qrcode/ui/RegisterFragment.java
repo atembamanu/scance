@@ -13,13 +13,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.blueman.scanwithit.R;
+import com.blueman.scanwithit.qrcode.models.Student;
 import com.blueman.scanwithit.qrcode.models.network.ApiClient;
 import com.blueman.scanwithit.qrcode.models.network.ApiInterface;
-import com.blueman.scanwithit.qrcode.models.Student;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,7 +87,6 @@ public class RegisterFragment extends Fragment {
                     if (response.body().getCode() == 200 ){
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
-                        assert getFragmentManager() != null;
                         getFragmentManager().popBackStack();
                     }else{
                         progressBar.setVisibility(View.GONE);
@@ -108,11 +105,6 @@ public class RegisterFragment extends Fragment {
 
 
     }
-
-    private void nowYouCanLogin() {
-
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
