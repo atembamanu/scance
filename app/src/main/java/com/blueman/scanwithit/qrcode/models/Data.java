@@ -1,13 +1,16 @@
 
 package com.blueman.scanwithit.qrcode.models;
 
-import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 public class Data implements Serializable
 {
-
+    @SerializedName("student_id")
+    @Expose
+    private String studentId;
     @SerializedName("student_name")
     @Expose
     private String studentName;
@@ -36,8 +39,9 @@ public class Data implements Serializable
      * @param qRCode
      * @param studentClass
      */
-    public Data(String studentName, String studentEmail, String studentClass, String qRCode) {
+    public Data(String studentId, String studentName, String studentEmail, String studentClass, String qRCode) {
         super();
+        this.studentId = studentId;
         this.studentName = studentName;
         this.studentEmail = studentEmail;
         this.studentClass = studentClass;
@@ -74,6 +78,13 @@ public class Data implements Serializable
 
     public void setQRCode(String qRCode) {
         this.qRCode = qRCode;
+    }
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
 
 }

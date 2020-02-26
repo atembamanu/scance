@@ -3,6 +3,7 @@ package com.blueman.scanwithit.qrcode.ui;
 import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.blueman.scanwithit.R;
+import com.blueman.scanwithit.qrcode.models.Student;
 import com.blueman.scanwithit.qrcode.models.UserData;
 import com.blueman.scanwithit.qrcode.models.network.ApiClient;
 import com.blueman.scanwithit.qrcode.models.network.ApiInterface;
@@ -46,20 +48,25 @@ public class ScanActivity extends AppCompatActivity {
     TextView txtNo;
     @BindView(R.id.txt_true)
     TextView txtYES;
+    @BindView(R.id.txt_final)
+    TextView txtOK;
     @BindView(R.id.mView)
     View mView;
 
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
+    private  ApiInterface apiInterface;
 
     private String userName;
     private String userEmail;
     private String userClass;
+    private int userId;
     private String responseMessage;
     private String responseMessage2;
     private int responseCode;
     private String errorMessage;
     private Boolean isErrorMessage = true;
+
 
 
     @Override
@@ -142,23 +149,74 @@ public class ScanActivity extends AppCompatActivity {
                         vibrator.vibrate(50);
                         textViewConfirm.setText(isErrorMessage ? errorMessage : stringBuilder.toString());
                         textViewConfirm.setTextColor(isErrorMessage ? getResources().getColor(R.color.md_red_A200) : getResources().getColor(R.color.black_shade));
+
+
+                        txtYES.setOnClickListener(v->{
+                            //update user attendance status in the database
+                            apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+                            Call<Student> call = apiInterface.updateAttendance(userId, "present");
+
+                            call.enqueue(new Callback<Student>() {
+                                @Override
+                                public void onResponse(Call<Student> call, Response<Student> response) {
+                                    if (response.isSuccessful() && response.body() != null){
+                                        if(response.body().getCode() == 200){
+                                            textViewConfirm.setText(response.body().getMessage());
+                                            mView.setVisibility(View.INVISIBLE);
+                                            txtNo.setVisibility(View.INVISIBLE);
+                                            txtYES.setVisibility(View.INVISIBLE);
+                                            txtOK.setVisibility(View.VISIBLE);
+                                        }else{
+                                            textViewConfirm.setText(response.body().getMessage());
+                                            mView.setVisibility(View.INVISIBLE);
+                                            txtNo.setVisibility(View.INVISIBLE);
+                                            txtYES.setVisibility(View.INVISIBLE);
+                                            txtOK.setVisibility(View.VISIBLE);
+
+                                        }
+                                    }else{
+                                        assert response.body() != null;
+                                        textViewConfirm.setText(response.body().getMessage());
+                                        mView.setVisibility(View.INVISIBLE);
+                                        txtNo.setVisibility(View.INVISIBLE);
+                                        txtYES.setVisibility(View.INVISIBLE);
+                                        txtOK.setVisibility(View.VISIBLE);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Student> call, Throwable t) {
+                                    textViewConfirm.setText(t.getMessage());
+
+                                }
+
+                            });
+                        });
                     });
                 }
             }
         });
 
         txtNo.setOnClickListener(v -> {
-            finish();
-            overridePendingTransition(0, 0);
-            startActivity(getIntent());
-            overridePendingTransition(0, 0);
-
+           refreshActivity();
         });
+        txtOK.setOnClickListener(v->{
+            refreshActivity();
+        });
+
+
+
+    }
+    public void refreshActivity(){
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
 
     }
 
     private void getUserDataFromDatabase(final String QR_code) {
-        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<UserData> call = apiInterface.getUserData(QR_code);
 
         call.enqueue(new Callback<UserData>() {
@@ -169,6 +227,7 @@ public class ScanActivity extends AppCompatActivity {
                         userName = response.body().getData().getStudentName();
                         userEmail = response.body().getData().getStudentEmail();
                         userClass = response.body().getData().getStudentClass();
+                        userId = Integer.parseInt(response.body().getData().getStudentId());
                         responseCode = response.body().getCode();
                         //end progress bar
                     } else {

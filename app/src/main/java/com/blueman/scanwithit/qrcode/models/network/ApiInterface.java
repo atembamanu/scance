@@ -35,4 +35,11 @@ public interface ApiInterface {
             @Query("QR_code") String QR_code
     );
 
+    @FormUrlEncoded
+    @POST("studentAttendance.php")
+    Call<Student>  updateAttendance(
+            @Field("student_id") int student_id,
+            @Field("student_status") String student_status
+    );
+
 }
