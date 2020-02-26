@@ -147,6 +147,13 @@ public class ScanActivity extends AppCompatActivity {
             }
         });
 
+        txtNo.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(getIntent());
+            overridePendingTransition(0, 0);
+
+        });
 
     }
 
