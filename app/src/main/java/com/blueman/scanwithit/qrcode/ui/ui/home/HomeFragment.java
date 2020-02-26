@@ -1,6 +1,7 @@
 package com.blueman.scanwithit.qrcode.ui.ui.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -24,6 +25,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.blueman.scanwithit.R;
+import com.blueman.scanwithit.qrcode.ui.ScanActivity;
 import com.google.zxing.WriterException;
 
 import java.util.Objects;
@@ -66,9 +68,9 @@ public class HomeFragment extends Fragment {
             textView.setText(finalStringMessage);
         });
 
-
-
-
+        textEmail.setOnClickListener(v -> {
+            launchScanner();
+        });
         assert QRCODE != null;
         if(QRCODE.length() > 0){
             WindowManager manager = (WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE);
@@ -94,5 +96,10 @@ public class HomeFragment extends Fragment {
 
 
         return root;
+    }
+
+    private void launchScanner() {
+        Intent intent = new Intent(getActivity(), ScanActivity.class);
+        startActivity(intent);
     }
 }
