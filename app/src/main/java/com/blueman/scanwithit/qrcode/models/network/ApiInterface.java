@@ -6,7 +6,9 @@ import com.blueman.scanwithit.qrcode.models.UserData;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ApiInterface {
     @FormUrlEncoded
@@ -26,6 +28,11 @@ public interface ApiInterface {
     Call<UserData> performLogin(
             @Field("student_email") String student_email,
             @Field("student_pass") String student_pass
+    );
+
+    @GET("getUser.php")
+    Call<UserData> getUserData(
+            @Query("QR_code") String QR_code
     );
 
 }

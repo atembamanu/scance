@@ -1,20 +1,22 @@
 package com.blueman.scanwithit.qrcode.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Button;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.blueman.scanwithit.R;
+import com.blueman.scanwithit.qrcode.models.UserData;
+import com.blueman.scanwithit.qrcode.models.network.ApiClient;
+import com.blueman.scanwithit.qrcode.models.network.ApiInterface;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -30,18 +32,34 @@ import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ScanActivity extends AppCompatActivity {
 
-    @BindView(R.id.scan_qrcode) SurfaceView surfaceView;
+    @BindView(R.id.scan_qrcode)
+    SurfaceView surfaceView;
     @BindView(R.id.txt_confirm)
     TextView textViewConfirm;
-    @BindView(R.id.btn_confirm)
-    Button btnConfirm;
+    @BindView(R.id.txt_false)
+    TextView txtNo;
+    @BindView(R.id.txt_true)
+    TextView txtYES;
+    @BindView(R.id.mView)
+    View mView;
 
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
 
+    private String userName;
+    private String userEmail;
+    private String userClass;
+    private String responseMessage;
+    private String responseMessage2;
+    private int responseCode;
+    private String errorMessage;
+    private Boolean isErrorMessage = true;
 
 
     @Override
@@ -62,7 +80,7 @@ public class ScanActivity extends AppCompatActivity {
                 externalStoragePermission();
                 try {
                     cameraSource.start(holder);
-                }catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
@@ -87,19 +105,84 @@ public class ScanActivity extends AppCompatActivity {
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 SparseArray<Barcode> qrCodes = detections.getDetectedItems();
-                if (qrCodes.size() != 0){
-                    textViewConfirm.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                            vibrator.vibrate(50);
-                            textViewConfirm.setText(qrCodes.valueAt(0).displayValue);
+                if (qrCodes.size() != 0) {
+                    getUserDataFromDatabase(qrCodes.valueAt(0).displayValue);
+                    StringBuilder stringBuilder = new StringBuilder();
+                    if (responseCode == 401) {
+                        isErrorMessage = true;
+                        errorMessage = responseMessage;
+                        mView.setVisibility(View.INVISIBLE);
+                        txtNo.setVisibility(View.INVISIBLE);
+                        txtYES.setVisibility(View.INVISIBLE);
+                    } else if (responseCode == 100) {
+                        isErrorMessage = true;
+                        errorMessage = responseMessage2;
+                        mView.setVisibility(View.INVISIBLE);
+                        txtNo.setVisibility(View.INVISIBLE);
+                        txtYES.setVisibility(View.INVISIBLE);
+                    } else {
+                        if (userName == null && userEmail == null && userClass == null) {
+                            isErrorMessage = true;
+                            errorMessage = "I couldn\'t get that right, Focus well for best results";
+                            mView.setVisibility(View.INVISIBLE);
+                            txtNo.setVisibility(View.INVISIBLE);
+                            txtYES.setVisibility(View.INVISIBLE);
+                        } else {
+                            isErrorMessage = false;
+                            stringBuilder.append("Got it..Is this you?").append("\n\n").append(userName).append("\n").append(userEmail).append("\n").append(userClass);
+                            mView.setVisibility(View.VISIBLE);
+                            txtNo.setVisibility(View.VISIBLE);
+                            txtYES.setVisibility(View.VISIBLE);
                         }
+                    }
+
+                    textViewConfirm.post(() -> {
+                        Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                        assert vibrator != null;
+                        vibrator.vibrate(50);
+                        textViewConfirm.setText(isErrorMessage ? errorMessage : stringBuilder.toString());
+                        textViewConfirm.setTextColor(isErrorMessage ? getResources().getColor(R.color.md_red_A200) : getResources().getColor(R.color.black_shade));
                     });
                 }
             }
         });
+
+
     }
+
+    private void getUserDataFromDatabase(final String QR_code) {
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<UserData> call = apiInterface.getUserData(QR_code);
+
+        call.enqueue(new Callback<UserData>() {
+            @Override
+            public void onResponse(Call<UserData> call, Response<UserData> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().getCode() == 200) {
+                        userName = response.body().getData().getStudentName();
+                        userEmail = response.body().getData().getStudentEmail();
+                        userClass = response.body().getData().getStudentClass();
+                        responseCode = response.body().getCode();
+                        //end progress bar
+                    } else {
+                        responseMessage = response.body().getMessage();
+                        responseCode = response.body().getCode();
+                    }
+                } else {
+                    assert response.body() != null;
+                    responseMessage2 = response.body().getMessage();
+                    responseCode = response.body().getCode();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserData> call, Throwable t) {
+                Toast.makeText(ScanActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void externalStoragePermission() {
         Dexter.withActivity(this)
                 .withPermission(Manifest.permission.CAMERA)
