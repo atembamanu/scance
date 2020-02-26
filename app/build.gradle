@@ -45,4 +45,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services-vision:19.0.0'
     implementation 'com.karumi:dexter:6.0.2'
     implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
 }
