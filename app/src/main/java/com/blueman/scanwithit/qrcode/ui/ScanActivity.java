@@ -31,6 +31,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.IOException;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -154,7 +155,16 @@ public class ScanActivity extends AppCompatActivity {
                         txtYES.setOnClickListener(v->{
                             //update user attendance status in the database
                             apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-                            Call<Student> call = apiInterface.updateAttendance(userId, "present");
+                            Calendar c = Calendar.getInstance();
+                            int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+                            int minOfDay = c.get(Calendar.MINUTE);
+                            String status;
+                            if (timeOfDay<8 && minOfDay<35){
+                                status = "present";
+                            }else{
+                                status = "late";
+                            }
+                            Call<Student> call = apiInterface.updateAttendance(userId, status);
 
                             call.enqueue(new Callback<Student>() {
                                 @Override
