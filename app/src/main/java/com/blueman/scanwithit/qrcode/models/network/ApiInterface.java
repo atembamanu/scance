@@ -2,6 +2,7 @@ package com.blueman.scanwithit.qrcode.models.network;
 
 import com.blueman.scanwithit.qrcode.models.Student;
 import com.blueman.scanwithit.qrcode.models.UserData;
+import com.blueman.scanwithit.qrcode.models.attendanceStatus.Attendance;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -40,6 +41,16 @@ public interface ApiInterface {
     Call<Student>  updateAttendance(
             @Field("student_id") int student_id,
             @Field("student_status") String student_status
+    );
+
+    @GET("getUserLateDates.php")
+    Call<Attendance> getLateDates(
+            @Query("student_id") int student_id
+    );
+
+    @GET("getStudentPresentDates.php")
+    Call<Attendance> getPresentDates(
+            @Query("student_id") int student_id
     );
 
 }

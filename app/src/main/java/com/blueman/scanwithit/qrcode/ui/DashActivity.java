@@ -31,7 +31,7 @@ public class DashActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
             if (bundle.getString("QR_String") != null){
-                Toast.makeText(this,bundle.getString("QR_String") , Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this,bundle.getString("QR_String") , Toast.LENGTH_SHORT).show();
             }
         }
     }

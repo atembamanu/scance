@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="4dp"
         app:cardPreventCornerOverlap="false"
@@ -21,8 +22,25 @@
 
         <SurfaceView
             android:id="@+id/scan_qrcode"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="400dp" />
+        <fragment
+            android:id="@+id/barcode_scanner"
+            android:name="info.androidhive.barcode.BarcodeReader"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+             />
+
+        <info.androidhive.barcode.ScannerOverlay
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:background="#44000000"
+            app:line_color="@color/colorPrimary"
+            app:line_speed="6"
+            app:line_width="4"
+            app:square_height="200"
+            app:square_width="200" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView

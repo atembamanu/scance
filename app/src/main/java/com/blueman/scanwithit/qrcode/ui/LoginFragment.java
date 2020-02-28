@@ -86,13 +86,14 @@ public class LoginFragment extends Fragment{
                     if (response.body().getCode() == 200 ){
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         //store qrcode in shared pref file
-
+                        int std_Id = Integer.parseInt(response.body().getData().getStudentId());
                         SharedPreferences pref = getActivity().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("qrcode_string", response.body().getData().getQRCode());
                         editor.putString("name_string", response.body().getData().getStudentName());
                         editor.putString("email_string", response.body().getData().getStudentEmail());
                         editor.putString("class_string", response.body().getData().getStudentClass());
+                        editor.putInt("student_id", std_Id);
                         editor.apply();
                         progressBar.setVisibility(View.GONE);
                         Intent intent = new Intent(getActivity(), DashActivity.class);
@@ -111,7 +112,7 @@ public class LoginFragment extends Fragment{
             @Override
             public void onFailure(Call<UserData> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(getContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Oops, "+t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
