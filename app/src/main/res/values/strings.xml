@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">Scan With IT</string>
+    <string name="app_name">Scance</string>
+    <string name="title_activity_dash">Scance Zone</string>
+    <string name="title_home">Scance</string>
+    <string name="title_dashboard">My Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="confirm_data_null">I could get that right, Focus well for best results</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="scan_results_will_display_here">Scan results will display here</string>
+    <string name="ok">OK</string>
 </resources>
